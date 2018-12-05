@@ -9,24 +9,36 @@ import (
 )
 
 func main() {
-	dat, err := ioutil.ReadFile("../polymer.txt")
+	data, err := ioutil.ReadFile("../polymer.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
+	result := day5Result(data)
+	fmt.Println(result)
+}
 
-	// str := "dabAcCaCBAcCcaDA"
+func day5Result(list []byte) map[string]int {
 	letters := []string{"aA", "bB", "cC", "dD", "eE", "fF", "gG", "hH", "iI", "jJ", "kK", "lL", "mM", "nN", "oO", "pP", "qQ", "rR", "sS", "tT", "uU", "vV", "wW", "xX", "yY", "zZ"}
+	res := make(map[string]int, 0)
+
+	s := make([]rune, 0)
+	for _, val := range string(list) {
+		s = append(s, val)
+	}
+	result := loopOver(s)
+	res["all"] = len(runeString(result))
+
 	for _, val := range letters {
-		input := strings.Replace(string(dat), val[0:1], "", -1)
+		input := strings.Replace(string(list), val[0:1], "", -1)
 		input2 := strings.Replace(input, val[1:], "", -1)
 		s := make([]rune, 0)
 		for _, val := range input2 {
 			s = append(s, val)
 		}
-		ll := loopOver(s)
-		fmt.Println(val)
-		fmt.Println(len(runeString(ll)))
+		result := loopOver(s)
+		res[val] = len(runeString(result))
 	}
+	return res
 }
 
 func runeString(x []rune) string {
